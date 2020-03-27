@@ -26,12 +26,12 @@ RUN aria2c --file-allocation=none \
 
 ##Compile Quake3
 RUN cd /tmp \
-    && wget https://github.com/pedrxd/MaxModUrT/archive/urt-test.zip \
-    && unzip urt-test.zip \
-    && cd MaxModUrT-urt-test \
+    && wget https://github.com/pedrxd/MaxModUrT/archive/urt.zip \
+    && unzip urt.zip \
+    && cd MaxModUrT-urt \
     && make -j8 \
-    && cp /tmp/MaxModUrT-urt-test/build/release-linux-*/urbanterror-server-m9.* /data/UrbanTerror43/urbanterror-server && chmod +x /data/UrbanTerror43/urbanterror-server \
-    && rm -r /tmp/MaxModUrT-urt-test
+    && cp /tmp/MaxModUrT-urt/build/release-linux-*/urbanterror-server-m9.* /data/UrbanTerror43/urbanterror-server && chmod +x /data/UrbanTerror43/urbanterror-server \
+    && rm -r /tmp/MaxModUrT-urt
 
 COPY urt.sh /data/UrbanTerror43/run.sh
 RUN chmod +x /data/UrbanTerror43/run.sh
