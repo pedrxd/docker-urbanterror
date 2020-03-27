@@ -31,7 +31,7 @@ RUN cd /tmp \
     && cd MaxModUrT-urt \
     && make -j8 \
     && cp /tmp/MaxModUrT-urt/build/release-linux-*/urbanterror-server-m9.* /data/UrbanTerror43/urbanterror-server && chmod +x /data/UrbanTerror43/urbanterror-server \
-    && rm -r /tmp/MaxModUrT-urt
+    && rm -r /tmp/*
 
 COPY urt.sh /data/UrbanTerror43/run.sh
 RUN chmod +x /data/UrbanTerror43/run.sh
