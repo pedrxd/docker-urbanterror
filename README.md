@@ -16,17 +16,6 @@ If you want to use your customized config take care of this structure. If not, t
 ```
 The server files are saved on **/data/UrbanTerror43/**. You can use your custom binary replacing **/data/UrbanTerror43/urbanterror-server** file.
 
-## docker run
-You can run with default configuration using the following command
-
-`docker run -d -p 27960:27960/udp pedrxd/urbanterror`
-
-For a customized server, you need to add your config folder:
-
-`docker run -d -p 27960:27960/udp -v /your/config/path:/config pedrxd/urbanterror`
-
-If there is not any config file on that path, the container will create one for  you.
-
 ## Environment
 `URT_SERVERNAME`
 
@@ -35,3 +24,55 @@ If there is not any config file on that path, the container will create one for 
 `URT_MAP`: Set the first map for start with
 
 `URT_PORT`: Set port, default 27960
+
+## docker run
+You can run with default configuration using the following command
+
+```bash
+docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" pedrxd/urbanterror
+```
+
+For a customized server, you need to add your config folder:
+
+```bash
+docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" -v /your/config/path:/config pedrxd/urbanterror
+```
+
+If there is not any config file on that path, the container will create one for  you.
+
+## Docker-compose example
+This is a example of Urbanterror with b3 bot. Remember to create games.log file before run docker-compose.
+
+```bash
+mkdir -p ./urbanterror/q3ut4 &&
+touch ./urbanterror/q3ut4/games.log
+ ```
+
+```yaml
+version: '3'
+networks:
+  backend:
+services:
+  urbanterror:
+    image: pedrxd/urbanterror
+    restart: always
+    ports:
+      - 27960:27960/udp
+    networks:
+      backend:
+    environment:
+      - URT_RCONPASSWORD=yourpassword
+    volumes:
+      - ./urbanterror:/config
+  b3:
+    image: pedrxd/bigbrotherbot
+    restart: always
+    networks:
+      backend:
+    environment:
+      - B3_RCONPASSWORD=yourpassword
+      - B3_GAMEIP=urbanterror
+    volumes:
+     - ./urbanterror/q3ut4/games.log:/var/log/games.log:ro
+     - ./b3:/config
+```
