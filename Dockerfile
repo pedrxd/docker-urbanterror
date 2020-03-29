@@ -1,10 +1,13 @@
 FROM debian:buster
 
 ENV URT_PORT 27960
+ENV URT_SERVERNAME "New Unnamed Server"
+ENV URT_MAP "ut4_casa"
 
 ## Install dependencies
 RUN apt-get update \
   && apt-get -y install \
+    gettext-base \
     aria2 \
     unzip \
     make \
@@ -22,7 +25,9 @@ RUN aria2c --file-allocation=none \
   https://www.happyurtday.com/releases/4x/UrbanTerror434_full.zip \
   --dir=/tmp \
     && mkdir /data/ \
-    && unzip /tmp/UrbanTerror43*.zip -d /data/ && rm /tmp/UrbanTerror43*.zip 
+    && unzip /tmp/UrbanTerror43*.zip -d /data/ && rm /tmp/UrbanTerror43*.zip
+
+ADD server.cfg /data/UrbanTerror43/q3ut4/docker-server.cfg
 
 ##Compile Quake3
 RUN cd /tmp \

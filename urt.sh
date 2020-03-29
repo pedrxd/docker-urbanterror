@@ -1,14 +1,19 @@
 #!/bin/sh
 
-URT_PORT=${URT_PORT:-27960}
-
-#Check if server.cfg exist
-if [ -e /config/q3ut4/server.cfg ]; then
-  echo "Server config found"
-else
-  echo "Server config not found, copying the default one..."
+if [ ! -e /config/q3ut4/server.cfg ]; then
+  echo "Server config not found, using the default one..."
   mkdir -p /config/q3ut4
-  cp /data/UrbanTerror43/q3ut4/server_example.cfg /config/q3ut4/server.cfg
+
+  if [ -z "${URT_RCONPASSWORD}" ]; then
+    export URT_RCONPASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8 ; echo '')
+    echo " "
+    echo "============Rcon Password=========="
+    echo " The rcon password is ${URT_RCONPASSWORD}"
+    echo "==================================="
+    echo " "
+  fi
+
+  envsubst < /data/UrbanTerror43/q3ut4/docker-server.cfg > /config/q3ut4/server.cfg
 fi
 
 ## run the UrT server

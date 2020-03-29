@@ -26,3 +26,12 @@ For a customized server, you need to add your config folder:
 `docker run -d -p 27960:27960/udp -v /your/config/path:/config pedrxd/urbanterror`
 
 If there is not any config file on that path, the container will create one for  you.
+
+## Environment
+`URT_SERVERNAME`
+
+`URT_RCONPASSWORD`: Set a custom password, if none specified a random one will be generated and echo on console
+
+`URT_MAP`: Set the first map for start with
+
+`URT_PORT`: Set port, default 27960
