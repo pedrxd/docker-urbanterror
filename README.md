@@ -41,17 +41,13 @@ docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" -v /your/config/
 If there is not any config file on that path, the container will create one for  you.
 
 ## Docker-compose example
-This is a example of Urbanterror with b3 bot. Remember to create games.log file before run docker-compose.
-
-```bash
-mkdir -p ./urbanterror/q3ut4 &&
-touch ./urbanterror/q3ut4/games.log
- ```
-
+This is a example of Urbanterror with b3 bot.
 ```yaml
 version: '3'
+
 networks:
   backend:
+
 services:
   urbanterror:
     image: pedrxd/urbanterror
@@ -63,7 +59,7 @@ services:
     environment:
       - URT_RCONPASSWORD=yourpassword
     volumes:
-      - ./urbanterror:/urtconfig
+      - 'urtconfig:/urtconfig'
   b3:
     image: pedrxd/bigbrotherbot
     restart: always
@@ -72,7 +68,10 @@ services:
     environment:
       - B3_RCONPASSWORD=yourpassword
       - B3_GAMEIP=urbanterror
+      - B3_GAMELOG=/urtconfig/q3ut4/games.log
     volumes:
-     - ./urbanterror/q3ut4/games.log:/var/log/games.log:ro
-     - ./b3:/b3config
+      - 'urtconfig:/urtconfig'
+
+volumes:
+  urtconfig:
 ```
