@@ -6,7 +6,7 @@
 # Usage
 If you want to use your customized config take care of this structure. If not, the container will create one for you with the default configuration.
 ```
-/config/
+/urtconfig/
 └── q3ut4
     ├── games.log
     ├── q3config_server.cfg
@@ -35,7 +35,7 @@ docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" pedrxd/urbanterr
 For a customized server, you need to add your config folder:
 
 ```bash
-docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" -v /your/config/path:/config pedrxd/urbanterror
+docker run -d -p 27960:27960/udp -e URT_SERVERNAME="My Server!" -v /your/config/path:/urtconfig pedrxd/urbanterror
 ```
 
 If there is not any config file on that path, the container will create one for  you.
@@ -63,7 +63,7 @@ services:
     environment:
       - URT_RCONPASSWORD=yourpassword
     volumes:
-      - ./urbanterror:/config
+      - ./urbanterror:/urtconfig
   b3:
     image: pedrxd/bigbrotherbot
     restart: always
@@ -74,5 +74,5 @@ services:
       - B3_GAMEIP=urbanterror
     volumes:
      - ./urbanterror/q3ut4/games.log:/var/log/games.log:ro
-     - ./b3:/config
+     - ./b3:/b3config
 ```

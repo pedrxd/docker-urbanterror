@@ -1,13 +1,8 @@
-FROM debian:buster
-
-ENV URT_PORT 27960
-ENV URT_SERVERNAME "New Unnamed Server"
-ENV URT_MAP "ut4_casa"
+FROM debian:buster as builder
 
 ## Install dependencies
 RUN apt-get update \
   && apt-get -y install \
-    gettext-base \
     aria2 \
     unzip \
     make \
@@ -27,8 +22,6 @@ RUN aria2c --file-allocation=none \
     && mkdir /data/ \
     && unzip /tmp/UrbanTerror43*.zip -d /data/ && rm /tmp/UrbanTerror43*.zip
 
-ADD server.cfg /data/UrbanTerror43/q3ut4/docker-server.cfg
-
 ##Compile Quake3
 RUN cd /tmp \
     && wget https://github.com/pedrxd/MaxModUrT/archive/urt.zip \
@@ -38,8 +31,22 @@ RUN cd /tmp \
     && cp /tmp/MaxModUrT-urt/build/release-linux-*/urbanterror-server-m9.* /data/UrbanTerror43/urbanterror-server && chmod +x /data/UrbanTerror43/urbanterror-server \
     && rm -r /tmp/*
 
+FROM debian:buster as final
+
+RUN apt-get update
+RUN apt-get install gettext-base -y
+
+ENV URT_PORT 27960
+ENV URT_SERVERNAME "New Unnamed Server"
+ENV URT_MAP "ut4_casa"
+
+COPY --from=builder /data/ /data/
+COPY server.cfg /data/UrbanTerror43/q3ut4/docker-server.cfg
 COPY urt.sh /data/UrbanTerror43/run.sh
+
 RUN chmod +x /data/UrbanTerror43/run.sh
+
+VOLUME urtconfig
 
 ##Add script for run server
 ENTRYPOINT ["/data/UrbanTerror43/run.sh"]
