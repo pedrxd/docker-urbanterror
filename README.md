@@ -8,10 +8,11 @@ If you want to use your customized config take care of this structure. If not, t
 ```
 /urtconfig/
 └── q3ut4
-    ├── games.log
+    ├── log
+        └── games.log
     ├── q3config_server.cfg
-    └── server.cfg
-    └── yourmap.pk3
+    ├── server.cfg
+    ├── yourmap.pk3
     └── othermap.pk3
 ```
 The server files are saved on **/data/UrbanTerror43/**. You can use your custom binary replacing **/data/UrbanTerror43/urbanterror-server** file.
@@ -42,6 +43,7 @@ If there is not any config file on that path, the container will create one for 
 
 ## Docker-compose example
 This is a example of Urbanterror with b3 bot.
+
 ```yaml
 version: '3'
 
@@ -59,7 +61,7 @@ services:
     environment:
       - URT_RCONPASSWORD=yourpassword
     volumes:
-      - 'urtconfig:/urtconfig'
+      - 'urtlog:/urtconfig/q3ut4/log'
   b3:
     image: pedrxd/bigbrotherbot
     restart: always
@@ -68,10 +70,10 @@ services:
     environment:
       - B3_RCONPASSWORD=yourpassword
       - B3_GAMEIP=urbanterror
-      - B3_GAMELOG=/urtconfig/q3ut4/games.log
+      - B3_GAMELOG=/log/games.log
     volumes:
-      - 'urtconfig:/urtconfig'
+      - 'urtlog:/log'
 
 volumes:
-  urtconfig:
+  urtlog:
 ```

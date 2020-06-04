@@ -46,7 +46,4 @@ COPY urt.sh /data/UrbanTerror43/run.sh
 
 RUN chmod +x /data/UrbanTerror43/run.sh
 
-VOLUME urtconfig
-
-##Add script for run server
 ENTRYPOINT ["/data/UrbanTerror43/run.sh"]
